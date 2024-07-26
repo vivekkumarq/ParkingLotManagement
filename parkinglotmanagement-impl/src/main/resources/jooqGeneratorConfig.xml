@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.14.0.xsd">
+
+    <generator>
+        <strategy>
+            <matchers>
+                <tables>
+                    <table>
+                        <tableClass>
+                            <transform>PASCAL</transform>
+                            <expression>$0_Table</expression>
+                        </tableClass>
+                    </table>
+                </tables>
+            </matchers>
+        </strategy>
+        <database>
+            <name>org.jooq.meta.extensions.jpa.JPADatabase</name>
+            <includes>.*</includes>
+            <outputSchemaToDefault>true</outputSchemaToDefault>
+            <inputSchema>PUBLIC</inputSchema>
+            <properties>
+                <property>
+                    <key>dialect</key>
+                    <value>POSTGRES</value>
+                </property>
+                <property>
+                    <key>packages</key>
+                    <value>com.netcracker.parkinglot management.api.entity</value>
+                </property>
+                <property>
+                    <key>use-attribute-converters</key>
+                    <value>true</value>
+                </property>
+            </properties>
+        </database>
+        <generate>
+            <javaTimeTypes>true</javaTimeTypes>
+            <springAnnotations>true</springAnnotations>
+            <fluentSetters>true</fluentSetters>
+        </generate>
+        <target>
+            <packageName>com.netcracker.parkinglotmanagement.data</packageName>
+            <directory>target/generated-sources/jooq</directory>
+        </target>
+    </generator>
+</configuration>
