@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="parkinglotmanagement-api" />
+        <module name="parkinglotmanagement-application" />
+        <module name="parkinglotmanagement-database" />
+        <module name="parkinglotmanagement-web" />
+      </profile>
+      <profile name="Annotation profile for parkinglotmanagement" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.4.1.Final/mapstruct-processor-1.4.1.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.1.Final/mapstruct-1.4.1.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.2/lombok-1.18.2.jar" />
+        </processorPath>
+        <module name="parkinglotmanagement-impl" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="parkinglotmanagement" options="" />
+      <module name="parkinglotmanagement-api" options="-parameters" />
+      <module name="parkinglotmanagement-application" options="-parameters" />
+      <module name="parkinglotmanagement-database" options="-parameters" />
+      <module name="parkinglotmanagement-impl" options="-parameters" />
+      <module name="parkinglotmanagement-web" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -2,21 +2,19 @@ package com.netcracker.parkinglotmanagement.api.entity;
 
 import com.netcracker.parkinglotmanagement.api.consts.ParkingLotConstants;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = ParkingLotConstants.TableNames.FLOOR )
 public class Floor {
     @Id
-    @Column(name = ParkingLotConstants.TableColumnNames.ID,columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
+    @Column(name = ParkingLotConstants.TableColumnNames.ID, columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID id;
 
-    @Id
-    @Column(name = ParkingLotConstants.TableColumnNames.ID,columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
+
+
+    @Column(name = ParkingLotConstants.TableColumnNames.BLOCK_ID,columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID blockId;
 
     @Column(name = ParkingLotConstants.TableColumnNames.FLOOR_NO)

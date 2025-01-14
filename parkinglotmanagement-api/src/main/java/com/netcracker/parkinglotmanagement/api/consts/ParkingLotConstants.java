@@ -7,6 +7,7 @@ public class ParkingLotConstants {
     }
     public static class TableColumnNames {
         public static final String ID = "id";
+        public static final String BLOCK_ID = "block_id";
         public static final String NUMBER_OF_BLOCKS = "number_of_blocks";
         public static final String ADDRESS = "address";
         public static final String LONGITUDE = "longitude";

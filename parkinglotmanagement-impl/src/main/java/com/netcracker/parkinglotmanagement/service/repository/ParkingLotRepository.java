@@ -8,6 +8,7 @@ import org.jooq.SelectSelectStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import static com.netcracker.parkinglotmanagement.data.Tables.PARKING_LOT;
 
 import java.util.List;
 import java.util.UUID;

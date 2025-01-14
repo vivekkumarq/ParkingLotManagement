@@ -16,7 +16,7 @@ public class Block {
     @Column(name = ParkingLotConstants.TableColumnNames.ID,columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID id;
 
-    @Id
+
     @Column(name= ParkingLotConstants.TableColumnNames.PARKING_LOT_ID,columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID parkingLotId;
 
