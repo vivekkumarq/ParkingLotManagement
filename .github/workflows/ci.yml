@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main, revamp]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      # java.version in the root POM is 17, and Lombok/jOOQ code generation are
+      # both pinned to versions that work on it.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build the reactor and run the tests
+        # No -DskipTests, and no external services: jOOQ generates from the JPA
+        # entity model and every integration test runs on in-memory H2 with the
+        # real Flyway migrations applied.
+        run: ./mvnw -B -ntp clean verify
+
+      - name: Publish the test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: '**/target/surefire-reports/*.xml'
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload the executable jar
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parkinglotmanagement-jar
+          path: parkinglotmanagement-application/target/parkinglotmanagement.jar
+          if-no-files-found: error
+          retention-days: 7

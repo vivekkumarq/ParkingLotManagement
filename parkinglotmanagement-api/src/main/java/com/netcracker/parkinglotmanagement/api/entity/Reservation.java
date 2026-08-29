@@ -1,85 +1,64 @@
 package com.netcracker.parkinglotmanagement.api.entity;
 
 import com.netcracker.parkinglotmanagement.api.consts.ParkingLotConstants;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.security.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * A slot held for a future window.
+ *
+ * <p>{@code endTimestamp} is derived from {@code startTimestamp + durationInHours}
+ * and stored explicitly so that overlap detection is a plain range predicate the
+ * database can answer with an index.
+ */
 @Entity
 @Table(name = ParkingLotConstants.TableNames.RESERVATION)
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
-
 
     @Id
     @Column(name = ParkingLotConstants.TableColumnNames.ID, columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID id;
 
-    @Column(name = ParkingLotConstants.TableColumnNames.CUSTOMER_ID, columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
+    @Column(name = ParkingLotConstants.TableColumnNames.CUSTOMER_ID,
+            columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID customerId;
 
-    @Column(name = ParkingLotConstants.TableColumnNames.START_TIMESTAMP, nullable = false)
-    private Timestamp startTimestamp;
-
-    @Column(name = ParkingLotConstants.TableColumnNames.DURATION_IN_HOURS, nullable = false)
-    private int durationInHours;
-
-    @Column(name = ParkingLotConstants.TableColumnNames.BOOKING_DATE, nullable = false)
-    private Date bookingDate;
-
-    @Column(name = ParkingLotConstants.TableColumnNames.PARKING_SLOT_ID, columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
+    @Column(name = ParkingLotConstants.TableColumnNames.PARKING_SLOT_ID,
+            columnDefinition = ParkingLotConstants.TypeNames.UUID_TYPE)
     private UUID parkingSlotId;
 
-    public UUID getId() {
-        return id;
-    }
+    @Column(name = ParkingLotConstants.TableColumnNames.VEHICLE_NUMBER, nullable = false, length = 20)
+    private String vehicleNumber;
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    @Column(name = ParkingLotConstants.TableColumnNames.START_TIMESTAMP, nullable = false)
+    private LocalDateTime startTimestamp;
 
-    public UUID getCustomerId() {
-        return customerId;
-    }
+    @Column(name = ParkingLotConstants.TableColumnNames.END_TIMESTAMP, nullable = false)
+    private LocalDateTime endTimestamp;
 
-    public void setCustomerId(UUID customerId) {
-        this.customerId = customerId;
-    }
+    @Column(name = ParkingLotConstants.TableColumnNames.DURATION_IN_HOURS, nullable = false)
+    private Integer durationInHours;
 
-    public Timestamp getStartTimestamp() {
-        return startTimestamp;
-    }
+    @Column(name = ParkingLotConstants.TableColumnNames.BOOKING_DATE, nullable = false)
+    private LocalDate bookingDate;
 
-    public void setStartTimestamp(Timestamp startTimestamp) {
-        this.startTimestamp = startTimestamp;
-    }
+    @Column(name = ParkingLotConstants.TableColumnNames.STATUS, nullable = false, length = 20)
+    private String status;
 
-    public int getDurationInHours() {
-        return durationInHours;
-    }
-
-    public void setDurationInHours(int durationInHours) {
-        this.durationInHours = durationInHours;
-    }
-
-    public Date getBookingDate() {
-        return bookingDate;
-    }
-
-    public void setBookingDate(Date bookingDate) {
-        this.bookingDate = bookingDate;
-    }
-
-    public UUID getParkingSlotId() {
-        return parkingSlotId;
-    }
-
-    public void setParkingSlotId(UUID parkingSlotId) {
-        this.parkingSlotId = parkingSlotId;
-    }
-
+    @Column(name = ParkingLotConstants.TableColumnNames.CREATED_AT, nullable = false)
+    private LocalDateTime createdAt;
 }

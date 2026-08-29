@@ -38,6 +38,12 @@ public class ParkingLotConstants {
         public static final String CHARGES = "charges";
         public static final String VEHICLE_TYPE = "vehicle_type";
 
+        // Added by V2__Parking_Operations_And_Schema_Fixes.sql
+        public static final String STATUS = "status";
+        public static final String VERSION = "version";
+        public static final String END_TIMESTAMP = "end_timestamp";
+        public static final String CREATED_AT = "created_at";
+
 
         private TableColumnNames() {
         }

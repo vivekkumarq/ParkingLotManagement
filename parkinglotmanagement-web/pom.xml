@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.netcracker</groupId>
         <artifactId>parkinglotmanagement</artifactId>
@@ -11,51 +12,44 @@
     </parent>
 
     <artifactId>parkinglotmanagement-web</artifactId>
+    <name>parkinglotmanagement-web</name>
+    <description>REST controllers, RSQL filtering and the global exception handler</description>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.netcracker</groupId>
-            <artifactId>parkinglotmanagement-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.netcracker</groupId>
             <artifactId>parkinglotmanagement-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.netcracker</groupId>-->
-<!--            <artifactId>parkinglotmanagement-api</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version> <!-- or the latest version -->
+            <groupId>com.netcracker</groupId>
+            <artifactId>parkinglotmanagement-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.2.0.Final</version> <!-- or the latest version -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.3</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
 
         <dependency>
             <groupId>cz.jirutka.rsql</groupId>
             <artifactId>rsql-parser</artifactId>
-            <version>2.1.0</version>
         </dependency>
 
+        <!-- Bulk parking-lot upload from .xlsx workbooks. -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
     </dependencies>
-
 </project>

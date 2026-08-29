@@ -1,0 +1,64 @@
+# Application plus PostgreSQL.
+#
+#   cp .env.example .env
+#   docker compose up --build
+#
+# Swagger UI:  http://localhost:8083/swagger-ui.html
+# Health:      http://localhost:8083/actuator/health
+#
+# NOTE: Docker was not available in the environment this file was written in, so
+# this stack has never been started. Treat it as reviewed-but-unverified.
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: parkinglot-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-parkinglotmanagement}
+      POSTGRES_USER: ${POSTGRES_USER:-parking}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-parking}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - parkinglot-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # The app waits on this, so the first Flyway migration cannot race the
+      # database's own start-up.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-parking} -d ${POSTGRES_DB:-parkinglotmanagement}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: parkinglot-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8083
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-parkinglotmanagement}
+      DB_USERNAME: ${POSTGRES_USER:-parking}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-parking}
+      DB_DRIVER: org.postgresql.Driver
+      JOOQ_DIALECT: Postgres
+      FLYWAY_ENABLED: "true"
+      RATE_CURRENCY: ${RATE_CURRENCY:-INR}
+      RATE_GRACE_MINUTES: ${RATE_GRACE_MINUTES:-15}
+    ports:
+      - "${APP_PORT:-8083}:8083"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://localhost:8083/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  parkinglot-postgres-data:
+    name: parkinglot-postgres-data
