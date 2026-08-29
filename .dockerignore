@@ -1,0 +1,11 @@
+target/
+**/target/
+.git/
+.github/
+.idea/
+*.iml
+.env
+*.log
+docs/
+README.md
+CONTRIBUTING.md
