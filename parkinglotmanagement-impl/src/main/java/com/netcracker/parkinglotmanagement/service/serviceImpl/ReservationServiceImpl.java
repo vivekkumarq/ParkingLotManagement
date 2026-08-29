@@ -230,8 +230,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     /**
      * Frees a slot that a cancelled or expired booking was holding - but only if no
-     * <em>other</em> live booking still needs it, and only if it is not occupied by
-     * a vehicle that is physically there.
+     * other live booking still needs it, and only if it is not occupied by a vehicle
+     * that is physically there.
+     *
+     * <p>Call this only after the booking has already been moved out of BOOKED, so
+     * it does not count itself. The question is "does any BOOKED or CLAIMED booking
+     * still name this slot", not "does one overlap the window we are releasing": an
+     * adjacent later booking holds the slot without overlapping at all.
      */
     private void releaseIfUnheld(ReservationDTO reservation) {
         UUID slotId = reservation.getParkingSlotId();
@@ -239,10 +244,7 @@ public class ReservationServiceImpl implements ReservationService {
             return;
         }
 
-        boolean stillHeld = !reservationRepository
-                .findOverlapping(slotId, reservation.getStartTimestamp(), reservation.getEndTimestamp())
-                .isEmpty();
-        if (stillHeld) {
+        if (reservationRepository.countLiveHolds(slotId) > 0) {
             return;
         }
 

@@ -155,12 +155,22 @@ public class CustomRsqlVisitor implements RSQLVisitor<Condition, Void> {
      */
     private static Object coerce(Field<?> field, String argument) {
         DataType<?> dataType = field.getDataType();
+        Object converted;
         try {
-            return dataType.convert(argument);
+            converted = dataType.convert(argument);
         } catch (RuntimeException e) {
             throw new InvalidRequestException(
                     "Value '" + argument + "' is not valid for field '" + field.getName() + "'");
         }
+        // jOOQ's converter answers null for a value it cannot parse rather than
+        // throwing. Left alone that would turn `totalCost=gt=abc` into `> null`,
+        // which matches nothing and looks like an empty result rather than the bad
+        // request it is.
+        if (converted == null && !argument.isEmpty()) {
+            throw new InvalidRequestException(
+                    "Value '" + argument + "' is not valid for field '" + field.getName() + "'");
+        }
+        return converted;
     }
 
     private static List<Object> coerceAll(Field<?> field, List<String> arguments) {

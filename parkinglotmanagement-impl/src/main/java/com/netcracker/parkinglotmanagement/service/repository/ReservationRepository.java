@@ -86,6 +86,24 @@ public class ReservationRepository {
                 .fetch(ReservationRepository::toDto);
     }
 
+    /**
+     * How many live bookings still hold this slot.
+     *
+     * <p>Only BOOKED and CLAIMED bookings hold a slot. Used when a booking is
+     * cancelled or expires, to decide whether the slot may go back to FREE: an
+     * <em>adjacent</em> later booking still needs it even though its window does
+     * not overlap the one being released, so an overlap query is the wrong
+     * question to ask here.
+     */
+    public int countLiveHolds(UUID slotId) {
+        Integer count = dsl.selectCount()
+                .from(RESERVATION)
+                .where(RESERVATION.PARKING_SLOT_ID.eq(slotId))
+                .and(RESERVATION.STATUS.in(ReservationStatus.BOOKED.name(), ReservationStatus.CLAIMED.name()))
+                .fetchOne(0, Integer.class);
+        return count != null ? count : 0;
+    }
+
     /** BOOKED reservations whose window closed before {@code asOf} without being claimed. */
     public List<ReservationDTO> findExpirable(LocalDateTime asOf) {
         return dsl.select(RESERVATION.fields())
