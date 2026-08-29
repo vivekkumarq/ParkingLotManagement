@@ -64,7 +64,10 @@
                     <mainClass>com.netcracker.parkinglotmanagement.ParkinglotmanagementApplication</mainClass>
                 </configuration>
                 <executions>
+                    <!-- The id matches the parent's managed execution so it is
+                         configured, not duplicated. -->
                     <execution>
+                        <id>repackage</id>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
